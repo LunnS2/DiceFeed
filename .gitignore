@@ -1,36 +1,51 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+.pnp/
 .pnp.js
-.yarn/install-state.gz
 
-# testing
-/coverage
+# Build output
+.next/
+out/
+build/
+dist/
 
-# next.js
-/.next/
-/out/
+# Static files
+public/static/
 
-# production
-/build
+# Log files
+*.log
 
-# misc
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# MacOS
 .DS_Store
-*.pem
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Windows
+Thumbs.db
 
-# local env files
-.env*.local
+# Editor and IDE files
+.vscode/
+.idea/
 
-# vercel
-.vercel
-
-# typescript
+# TypeScript
 *.tsbuildinfo
-next-env.d.ts
+
+# Docker
+*.dockerignore
+*.docker-compose.yml
+
+# Testing and Coverage
+coverage/
+
+# Miscellaneous
+*.swp
+*.swo
