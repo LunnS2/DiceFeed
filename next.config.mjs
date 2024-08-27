@@ -1,3 +1,5 @@
+import path from 'path';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -14,12 +16,19 @@ const nextConfig = {
     ],
   },
   webpack(config) {
+    // Add custom alias
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@styles': path.resolve(process.cwd(), 'styles'),
+    };
+
     config.experiments = {
       ...config.experiments,
       topLevelAwait: true,
-    }
-    return config
+    };
+
+    return config;
   }
 }
 
-export default nextConfig
+export default nextConfig;
