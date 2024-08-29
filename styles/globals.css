@@ -2,3 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+.gradient {
+  height: 100vh; /* Ensures it covers the full viewport height */
+  width: 100vw;  /* Ensures it covers the full viewport width */
+  position: fixed; /* Ensures the gradient stays in place */
+  top: 0; /* Aligns it to the top of the viewport */
+  left: 0; /* Aligns it to the left of the viewport */
+  background-image: radial-gradient(
+      at 50% 20%, 
+      hsla(345, 100%, 85%, 0.7) 0px,    /* Soft Pink */
+      transparent 50%
+    ),
+    radial-gradient(at 50% 40%, 
+      hsla(30, 100%, 85%, 0.7) 0px,     /* Soft Orange */
+      transparent 50%
+    ),
+    radial-gradient(at 50% 60%, 
+      hsla(60, 100%, 85%, 0.7) 0px,     /* Light Yellow */
+      transparent 50%
+    ),
+    radial-gradient(at 50% 80%, 
+      hsla(120, 100%, 85%, 0.7) 0px,    /* Soft Green */
+      transparent 50%
+    ),
+    radial-gradient(at 50% 100%, 
+      hsla(210, 100%, 85%, 0.7) 0px,    /* Light Blue */
+      transparent 50%
+    ),
+    radial-gradient(at 50% 120%, 
+      hsla(275, 100%, 85%, 0.7) 0px,    /* Soft Purple */
+      transparent 50%
+    ),
+    radial-gradient(at 50% 140%, 
+      hsla(300, 100%, 85%, 0.7) 0px,    /* Light Violet */
+      transparent 50%
+    );
+  filter: blur(80px) saturate(120%);
+  opacity: 0.2; /* Lighter opacity for a more subtle effect */
+}
+

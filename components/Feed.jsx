@@ -4,7 +4,7 @@ function Feed() {
   return (
     <section>
       <div>
-        <h1>FEED</h1>
+        <h1 className="text-center">FEED</h1>
       </div>
     </section>
   )
