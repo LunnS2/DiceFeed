@@ -1,6 +1,6 @@
-import Nav from "@components/Nav";
 import "@styles/globals.css"
 import Provider from "@components/Provider";
+import Sidebar from "@components/Sidebar";
 
 export const metadata = {
   title:"DiceFeed",
@@ -15,7 +15,7 @@ const RootLayout = ({ children }) => (
           <div className="gradient"/>
         </div>
         <main className="app">
-          <Nav />
+          <Sidebar />
           {children}
         </main>
       </Provider>
