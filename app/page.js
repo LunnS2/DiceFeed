@@ -4,7 +4,9 @@ import Feed from "@/components/Feed";
 function Home() {
   return (
     <section className="relative w-full flex-center">
-      <Feed />
+      <div>
+        
+      </div>
     </section>
   );
 }

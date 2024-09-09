@@ -48,6 +48,12 @@ const Sidebar = () => {
               >
                 My Profile
               </Link>
+              <Link
+                href="/feed"
+                className="bg-white text-black py-2 px-4 rounded hover:bg-slate-200 transition"
+              >
+                Feed
+              </Link>
             </>
           ) : (
             providers &&
