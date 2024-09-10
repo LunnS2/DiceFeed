@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@media screen and (max-width: 640px) {
+  .main {
+    padding: 0;
+  }
+}
+
+.app {
+  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
+}
+
 .gradient {
   height: 100vh; /* Ensures it covers the full viewport height */
   width: 100vw;  /* Ensures it covers the full viewport width */
@@ -40,4 +50,3 @@
   filter: blur(80px) saturate(120%);
   opacity: 0.2; /* Lighter opacity for a more subtle effect */
 }
-

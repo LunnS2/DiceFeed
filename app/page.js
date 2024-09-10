@@ -7,6 +7,7 @@ function Home() {
       <div>
         
       </div>
+      <Feed />  
     </section>
   );
 }

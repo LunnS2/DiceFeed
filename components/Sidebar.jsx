@@ -37,7 +37,7 @@ const Sidebar = () => {
           {session?.user ? (
             <>
               <Link
-                href="/create-prompt"
+                href="/create-post"
                 className="bg-white text-black py-2 px-4 rounded hover:bg-slate-200 transition"
               >
                 Create Post
@@ -49,7 +49,7 @@ const Sidebar = () => {
                 My Profile
               </Link>
               <Link
-                href="/feed"
+                href="/"
                 className="bg-white text-black py-2 px-4 rounded hover:bg-slate-200 transition"
               >
                 Feed
