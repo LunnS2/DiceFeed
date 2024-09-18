@@ -1,25 +1,17 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 let isConnected = false;
 
 export const connectToDB = async () => {
-  mongoose.set("strictQuery", true);
+  if (isConnected) {
+    return mongoose.connection; 
+  }
+
+  const mongoURI = process.env.MONGODB_URI;
   
-  if(isConnected) {
-    console.log("MongoDB is already connected");
-    return;
-  }
+  await mongoose.connect(mongoURI);
 
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: "dice_feed",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+  isConnected = true;
 
-    isConnected = true;
-    console.log("MongoDB Connected")
-  } catch (error) {
-    
-  }
-}
+  return mongoose.connection;
+};

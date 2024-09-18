@@ -9,13 +9,21 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   ],
   callbacks: {
     async session({ session }) {
-      const sessionUser = await User.findOne({ email: session.user.email });
-      session.user.id = sessionUser._id.toString();
-
+      try {
+        await connectToDB();
+        const sessionUser = await User.findOne({ email: session.user.email });
+        if (sessionUser) {
+          session.user.id = sessionUser._id.toString();
+        } else {
+          console.warn("User not found in session callback");
+        }
+      } catch (error) {
+        console.error("Error fetching user in session callback:", error.message);
+      }
       return session;
     },
     async signIn({ account, profile, user, credentials }) {
@@ -32,13 +40,13 @@ const handler = NextAuth({
           });
         }
 
-        return true
+        return true;
       } catch (error) {
-        console.log("Error checking if user exists: ", error.message);
-        return false
+        console.error("Error checking if user exists:", error.message);
+        return false;
       }
     },
-  }
-})
+  },
+});
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };

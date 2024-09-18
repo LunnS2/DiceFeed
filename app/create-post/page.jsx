@@ -16,8 +16,18 @@ const CreatePost = () => {
     tag: "",
   });
 
+  const validatePost = () => {
+    return post.title && post.image && post.tag;
+  };
+
   const createPrompt = async (e) => {
     e.preventDefault();
+
+    if (!validatePost()) {
+      console.error("Please fill out all required fields.");
+      return;
+    }
+
     setSubmitting(true);
 
     const formData = new FormData();
@@ -35,10 +45,11 @@ const CreatePost = () => {
       if (response.ok) {
         router.push("/");
       } else {
-        console.error("Failed to create post");
+        const errorText = await response.text();
+        console.error("Failed to create post:", errorText);
       }
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.error("Error creating post:", error.message);
     } finally {
       setSubmitting(false);
     }
@@ -56,3 +67,4 @@ const CreatePost = () => {
 };
 
 export default CreatePost;
+

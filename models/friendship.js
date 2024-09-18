@@ -22,7 +22,6 @@ const FriendshipSchema = new Schema({
   },
 }, { timestamps: true });
 
-// Ensure a unique combination of user1Id and user2Id to prevent duplicate friendships
 FriendshipSchema.index({ user1Id: 1, user2Id: 1 }, { unique: true });
 
 const Friendship = models.Friendship || model("Friendship", FriendshipSchema);

@@ -16,10 +16,9 @@ const PostSchema = new Schema({
   },
   media: {
     type: Schema.Types.ObjectId,
-    ref: "images.files",
+    ref: "fs.files",
   }
 }, { timestamps: true });
 
 const Post = models.Post || model('Post', PostSchema);
 export default Post;
-

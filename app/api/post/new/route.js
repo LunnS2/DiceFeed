@@ -1,38 +1,53 @@
 import { connectToDB } from "@utils/database";
 import Post from "@models/post";
 import { GridFSBucket, MongoClient } from "mongodb";
+import multer from "multer";
+import { Readable } from "stream";
+import { NextResponse } from 'next/server';
 
-const client = new MongoClient(process.env.MONGODB_URI);
-const db = client.db("dice_feed");
-const bucket = new GridFSBucket(db);
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-export const POST = async (request) => {
-  try {
-    await connectToDB();
+export async function POST(req) {
+  const formData = await req.formData();
+  
+  const title = formData.get('title');
+  const tag = formData.get('tag');
+  const userId = formData.get('userId');
+  const file = formData.get('image');
 
-    const formData = new FormData(await request.text());
-    const title = formData.get('title');
-    const tag = formData.get('tag');
-    const userId = formData.get('userId');
-    const image = formData.get('image');
+  if (!title || !file || !tag || !userId) {
+    return NextResponse.json({ success: false, message: "All fields are required" }, { status: 400 });
+  }
 
-    const uploadStream = bucket.openUploadStream(image.name);
-    image.stream.pipe(uploadStream);
+  await connectToDB();
 
-    const mediaURL = `/api/files/${uploadStream.id}`;
+  const client = new MongoClient(process.env.MONGODB_URI);
+  await client.connect();
+  const db = client.db(process.env.DB_NAME);
+  const bucket = new GridFSBucket(db, { bucketName: "images" });
 
-    const newPost = new Post({
-      creator: userId,
-      title,
-      media: mediaURL,
-      tag,
+  const uploadStream = bucket.openUploadStream(file.name);
+  const readable = Readable.from(file.stream());
+
+  readable.pipe(uploadStream);
+
+  return new Promise((resolve, reject) => {
+    uploadStream.on('error', () => {
+      resolve(NextResponse.json({ success: false, message: "Failed to upload image" }, { status: 500 }));
     });
 
-    await newPost.save();
+    uploadStream.on('finish', async () => {
+      const newPost = new Post({
+        title,
+        media: uploadStream.id,
+        tag,
+        creator: userId
+      });
 
-    return new Response("Post created successfully", { status: 201 });
-  } catch (error) {
-    console.error("Failed to create post", error);
-    return new Response("Failed to create post", { status: 500 });
-  }
-};
+      await newPost.save();
+      resolve(NextResponse.json({ success: true, message: "Post created successfully" }, { status: 201 }));
+    });
+  });
+}
+

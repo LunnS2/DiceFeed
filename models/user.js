@@ -1,12 +1,11 @@
 import { Schema, model, models } from "mongoose";
 
-// Define the schema
 const UserSchema = new Schema({
   email: {
     type: String,
     unique: [true, "Email already exists!"],
     required: [true, "Email is required!"],
-    match: [/\S+@\S+\.\S+/, "Email is invalid!"]
+    match: [/\S+@\S+\.\S+/, "Email is invalid!"],
   },
   username: {
     type: String,
