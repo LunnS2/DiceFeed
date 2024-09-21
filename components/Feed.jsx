@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import UserPost from "./Post"; 
+import UserPost from "./Post";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -11,9 +11,10 @@ const Feed = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/api/post/new"); 
+        // Fetch all posts from the /api/feed endpoint
+        const response = await fetch("/api/feed");
         if (!response.ok) throw new Error("Failed to fetch posts");
-        
+
         const data = await response.json();
         setPosts(data);
       } catch (error) {
@@ -53,3 +54,4 @@ const Feed = () => {
 };
 
 export default Feed;
+

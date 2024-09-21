@@ -1,16 +1,12 @@
 import { connectToDB } from "@utils/database";
 import Post from "@models/post";
 import { GridFSBucket, MongoClient } from "mongodb";
-import multer from "multer";
 import { Readable } from "stream";
 import { NextResponse } from 'next/server';
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
 export async function POST(req) {
   const formData = await req.formData();
-  
+
   const title = formData.get('title');
   const tag = formData.get('tag');
   const userId = formData.get('userId');
@@ -30,9 +26,9 @@ export async function POST(req) {
   const uploadStream = bucket.openUploadStream(file.name);
   const readable = Readable.from(file.stream());
 
-  readable.pipe(uploadStream);
+  return new Promise((resolve) => {
+    readable.pipe(uploadStream);
 
-  return new Promise((resolve, reject) => {
     uploadStream.on('error', () => {
       resolve(NextResponse.json({ success: false, message: "Failed to upload image" }, { status: 500 }));
     });
@@ -45,9 +41,17 @@ export async function POST(req) {
         creator: userId
       });
 
-      await newPost.save();
-      resolve(NextResponse.json({ success: true, message: "Post created successfully" }, { status: 201 }));
+      try {
+        await newPost.save();
+        resolve(NextResponse.json({ success: true, message: "Post created successfully" }, { status: 201 }));
+      } catch (error) {
+        console.error("Failed to save post:", error);
+        resolve(NextResponse.json({ success: false, message: "Failed to save post" }, { status: 500 }));
+      }
     });
   });
 }
+
+
+
 

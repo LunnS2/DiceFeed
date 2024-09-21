@@ -23,7 +23,7 @@ const Sidebar = () => {
       <div>
         <Link href="/" className="flex items-center gap-2 mb-10">
           <Image
-            src="/assets/icons/test-icon"
+            src="public/assets/icons/test-icon"
             alt="logo"
             width={30}
             height={30}
