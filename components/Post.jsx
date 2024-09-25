@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -9,10 +7,8 @@ const UserPost = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
-  const [copied, setCopied] = useState(false);
 
-  // Check session loading state
-  if (session?.status === 'loading') return <div>Loading...</div>;
+  if (session?.status === "loading") return <div>Loading...</div>;
 
   const handleProfileClick = () => {
     if (post?.creator?._id === session?.user.id) {
@@ -22,18 +18,10 @@ const UserPost = ({ post, handleEdit, handleDelete, handleTagClick }) => {
     }
   };
 
-  const handleCopy = () => {
-    if (post?.content) {
-      navigator.clipboard.writeText(post.content);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000); // Reset copied status after 3 seconds
-    }
-  };
-
   return (
-    <div className="flex-1 break-inside-avoid rounded-lg border border-gray-300 bg-white/20 bg-clip-padding p-6 pb-4 backdrop-blur-lg backdrop-filter md:w-[360px] w-full h-fit">
+    <div className="flex flex-col items-center break-inside-avoid rounded-lg border border-gray-300 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 w-full max-w-md mx-auto mb-6">
       {/* User Info Section */}
-      <div className="flex justify-between items-start gap-5">
+      <div className="flex justify-between items-start gap-5 w-full">
         <div
           className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
           onClick={handleProfileClick}
@@ -54,29 +42,34 @@ const UserPost = ({ post, handleEdit, handleDelete, handleTagClick }) => {
             </p>
           </div>
         </div>
-
-        {/* Copy to Clipboard Button */}
-        <div
-          className="w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer"
-          onClick={handleCopy}
-        >
-          <Image
-            src={copied ? "/assets/icons/tick.svg" : "/assets/icons/copy.svg"}
-            alt={copied ? "Copied to clipboard" : "Copy to clipboard"}
-            width={12}
-            height={12}
-          />
-        </div>
       </div>
 
+      {/* Post Title */}
+      <h2 className="font-bold text-xl text-gray-900 mt-2 text-center">
+        {post?.title || "Untitled Post"}
+      </h2>
+
+      {/* Post Media */}
+      {post?.media && (
+        <div className="my-4">
+          <Image
+            src={`/api/images/${post?.media}`}
+            alt={post?.title || "Post Media"}
+            width={360}
+            height={240}
+            className="rounded-lg object-cover"
+          />
+        </div>
+      )}
+
       {/* Post Content */}
-      <p className="my-4 font-satoshi text-sm text-gray-700">
+      <p className="my-4 font-satoshi text-sm text-gray-700 text-center">
         {post?.content || "No content available"}
       </p>
 
       {/* Tag Section */}
       <p
-        className="font-inter text-sm cursor-pointer"
+        className="font-inter text-sm cursor-pointer text-blue-500 hover:underline"
         onClick={() => handleTagClick && handleTagClick(post?.tag)}
       >
         {post?.tag ? `#${post.tag}` : "#NoTag"}
@@ -84,17 +77,11 @@ const UserPost = ({ post, handleEdit, handleDelete, handleTagClick }) => {
 
       {/* Edit/Delete Options */}
       {session?.user.id === post?.creator?._id && pathName === "/profile" && (
-        <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-          <p
-            className="font-inter text-sm cursor-pointer"
-            onClick={handleEdit}
-          >
+        <div className="mt-5 flex gap-4 border-t border-gray-100 pt-3 w-full justify-center">
+          <p className="font-inter text-sm cursor-pointer text-blue-500 hover:underline" onClick={handleEdit}>
             Edit
           </p>
-          <p
-            className="font-inter text-sm cursor-pointer text-red-500"
-            onClick={handleDelete}
-          >
+          <p className="font-inter text-sm cursor-pointer text-red-500 hover:underline" onClick={handleDelete}>
             Delete
           </p>
         </div>
@@ -104,6 +91,9 @@ const UserPost = ({ post, handleEdit, handleDelete, handleTagClick }) => {
 };
 
 export default UserPost;
+
+
+
 
 
 

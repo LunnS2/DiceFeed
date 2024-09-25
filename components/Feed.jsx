@@ -11,7 +11,6 @@ const Feed = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        // Fetch all posts from the /api/feed endpoint
         const response = await fetch("/api/feed");
         if (!response.ok) throw new Error("Failed to fetch posts");
 
@@ -27,6 +26,28 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
+  const handleEdit = async (id) => {
+    // Edit logic
+    console.log("Edit post", id);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = confirm("Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`/api/posts/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete post");
+
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   if (loading) {
     return <div>Loading posts...</div>;
   }
@@ -35,7 +56,7 @@ const Feed = () => {
     <section className="feed w-full max-w-5xl mx-auto py-8">
       <div>
         <h1 className="text-center text-4xl font-bold mb-6">FEED</h1>
-        <div className="post-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-6">
           {posts.length === 0 ? (
             <p>No posts available.</p>
           ) : (
@@ -43,6 +64,8 @@ const Feed = () => {
               <UserPost
                 key={post._id}
                 post={post}
+                handleEdit={() => handleEdit(post._id)}
+                handleDelete={() => handleDelete(post._id)}
                 handleTagClick={(tag) => console.log(`Clicked on tag: ${tag}`)}
               />
             ))
@@ -54,4 +77,3 @@ const Feed = () => {
 };
 
 export default Feed;
-

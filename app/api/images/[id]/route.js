@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
     downloadStream.pipe(res);
   } catch (error) {
-    console.error("Failed to retrieve image", error);
+    console.error("Failed to retrieve image:", error);
     res.status(500).json({ success: false, message: "Failed to retrieve image" });
   }
 }

@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   const formData = await req.formData();
-
   const title = formData.get('title');
   const tag = formData.get('tag');
   const userId = formData.get('userId');
@@ -29,7 +28,8 @@ export async function POST(req) {
   return new Promise((resolve) => {
     readable.pipe(uploadStream);
 
-    uploadStream.on('error', () => {
+    uploadStream.on('error', (error) => {
+      console.error("Error uploading image:", error);
       resolve(NextResponse.json({ success: false, message: "Failed to upload image" }, { status: 500 }));
     });
 
