@@ -1,3 +1,5 @@
+// my-next-app\components\Sidebar.jsx
+
 "use client";
 
 import Link from "next/link";

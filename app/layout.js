@@ -1,3 +1,5 @@
+// my-next-app\app\layout.js
+
 import "@styles/globals.css"
 import Provider from "@components/Provider";
 import Sidebar from "@components/Sidebar";

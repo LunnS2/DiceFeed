@@ -1,17 +1,26 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 let isConnected = false;
 
 export const connectToDB = async () => {
+  mongoose.set("strictQuery", true);
+
   if (isConnected) {
-    return mongoose.connection; 
+    console.log("MongoDB is already connected");
+    return;  
   }
 
-  const mongoURI = process.env.MONGODB_URI;
-  
-  await mongoose.connect(mongoURI);
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: process.env.DB_NAME,
+    });
 
-  isConnected = true;
-
-  return mongoose.connection;
+    isConnected = true;
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.log("MongoDB connection error:", error);
+  }
 };

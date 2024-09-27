@@ -1,18 +1,28 @@
+// app/api/post/new/route.js
 import { connectToDB } from "@utils/database";
 import Post from "@models/post";
 import { GridFSBucket, MongoClient } from "mongodb";
 import { Readable } from "stream";
 import { NextResponse } from 'next/server';
+import { getServerSession } from "next-auth"; 
+import { authOptions } from "../../auth/[...nextauth]/route"; 
 
 export async function POST(req) {
   const formData = await req.formData();
   const title = formData.get('title');
   const tag = formData.get('tag');
-  const userId = formData.get('userId');
   const file = formData.get('image');
 
-  if (!title || !file || !tag || !userId) {
+  if (!title || !file || !tag) {
     return NextResponse.json({ success: false, message: "All fields are required" }, { status: 400 });
+  }
+
+  const session = await getServerSession(authOptions);
+  console.log("Session: ", session);
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 403 });
   }
 
   await connectToDB();
@@ -51,7 +61,3 @@ export async function POST(req) {
     });
   });
 }
-
-
-
-

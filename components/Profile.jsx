@@ -1,3 +1,5 @@
+// my-next-app\components\Profile.jsx
+
 import UserPost from "./Post";
 
 const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {

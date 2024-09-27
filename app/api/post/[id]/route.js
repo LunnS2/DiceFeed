@@ -1,6 +1,8 @@
+// my-next-app\app\api\post\[id]\route.js
+
 import mongoose from "mongoose";
 import { connectToDB } from '../../utils/database';
-import Post from '../../models/post'; // 
+import Post from '../../models/post';
 import { GridFSBucket, MongoClient, ObjectId } from "mongodb";
 
 export const GET = async (req, { params }) => {

@@ -21,15 +21,10 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         {type} Let your imagination run wild with an image post!
       </p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title Field */}
         <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Post Title
-          </label>
+          <label className="block text-gray-700 font-medium mb-2">Post Title</label>
           <input
             value={post.title}
             onChange={(e) => setPost({ ...post, title: e.target.value })}
@@ -42,9 +37,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
 
         {/* Image Upload Field */}
         <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Post Image
-          </label>
+          <label className="block text-gray-700 font-medium mb-2">Post Image</label>
           <input
             type="file"
             accept="image/*"

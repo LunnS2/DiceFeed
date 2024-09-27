@@ -1,3 +1,5 @@
+// my-next-app\app\users\[id]\posts\route.js
+
 import { connectToDB } from "@utils/database";
 import Post from "@models/post";
 

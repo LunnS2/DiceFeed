@@ -1,3 +1,5 @@
+// my-next-app\app\profile\[id]\page.jsx
+
 "use client";
 
 import { useEffect, useState } from "react";

@@ -1,3 +1,5 @@
+// my-next-app\app\create-post\page.jsx
+
 "use client";
 
 import { useState } from "react";
@@ -9,7 +11,7 @@ const CreatePost = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
-  
+  const [error, setError] = useState("");
   const [post, setPost] = useState({
     title: "",
     image: null,
@@ -24,17 +26,17 @@ const CreatePost = () => {
     e.preventDefault();
 
     if (!validatePost()) {
-      console.error("Please fill out all required fields.");
+      setError("Please fill out all required fields.");
       return;
     }
 
     setSubmitting(true);
+    setError("");
 
     const formData = new FormData();
     formData.append('title', post.title);
     formData.append('image', post.image);
     formData.append('tag', post.tag);
-    formData.append('userId', session?.user.id);
 
     try {
       const response = await fetch("/api/post/new", {
@@ -46,9 +48,11 @@ const CreatePost = () => {
         router.push("/");
       } else {
         const errorText = await response.text();
+        setError("Failed to create post: " + errorText);
         console.error("Failed to create post:", errorText);
       }
     } catch (error) {
+      setError("Error creating post: " + error.message);
       console.error("Error creating post:", error.message);
     } finally {
       setSubmitting(false);
@@ -56,15 +60,17 @@ const CreatePost = () => {
   };
 
   return (
-    <Form 
-      type="Create"
-      post={post}
-      setPost={setPost}
-      submitting={submitting}
-      handleSubmit={createPrompt}
-    />
+    <>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <Form 
+        type="Create"
+        post={post}
+        setPost={setPost}
+        submitting={submitting}
+        handleSubmit={createPrompt}
+      />
+    </>
   );
 };
 
 export default CreatePost;
-

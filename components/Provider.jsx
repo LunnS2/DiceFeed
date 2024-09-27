@@ -1,3 +1,5 @@
+// my-next-app\components\Provider.jsx
+
 "use client";
  
 import { SessionProvider } from 'next-auth/react';
